@@ -49,12 +49,12 @@ jobs:
           ./scripts/feeds update -a
       - name: Update package
         run: |
-          curl -fsSL https://git.io/JUgLH | sh
+          curl -fsSL https://github.com/zzd/other/raw/master/patch/script/update_package_all.sh | sh
           ./scripts/feeds install -a
           chmod -R 755 .
       - name: Generate configuration file
         run: |
-          curl -fsSL https://git.io/JUgLQ > .config
+          curl -fsSL https://github.com/zzd/other/raw/master/patch/x86-64/allappdrv.config > .config
           make defconfig
       - name: Make download
         run: |
@@ -83,20 +83,10 @@ jobs:
       - name: Upload Firmware
         uses: actions/upload-artifact@main
         with:
-          name: SirpdboyOpenWrt-IPV6-Firmware
+          name: OpenWrt-IPV6-Firmware
           path: ./new/firmware
       - name: Upload  IPK
         uses: actions/upload-artifact@main
         with:
-          name: SirpdboyOpenWrt-IPV6-Ipk
+          name: OpenWrt-IPV6-Ipk
           path: ./new/package
-      - name: Upload firmware to cowtransfer
-        run: |
-         curl -fsSL git.io/file-transfer | sh
-         ./transfer cow --block 2621440 -s -p 64 --no-progress ./new/firmware 2>&1 | tee cowtransfer.log
-         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-      - name: Upload Firmware wetransfer
-        run: |
-          curl -fsSL git.io/file-transfer | sh
-          ./transfer wet -s -p 16 --no-progress ./new/firmware 2>&1 | tee wetransfer.log
-          echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
