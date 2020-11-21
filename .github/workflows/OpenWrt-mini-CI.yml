@@ -9,8 +9,6 @@ on:
 #      - main
 #    paths:
 #      - '5.config'
-  schedule:
-    - cron: 0 22 */2 * * 
   watch:
     types: started
 jobs:
@@ -50,12 +48,12 @@ jobs:
           ./scripts/feeds update -a
       - name: Update package
         run: |
-          curl -fsSL https://git.io/JUgLD | sh
+          curl -fsSL https://raw.githubusercontent.com/zzd/other/master/patch/script/update_package_mini.sh | sh
           ./scripts/feeds install -a
           chmod -R 775 .
       - name: Generate configuration file
         run: |
-          curl -fsSL https://git.io/JUgLS > .config
+          curl -fsSL https://raw.githubusercontent.com/zzd/other/master/patch/x86-64/minialldrv.config > .config
           make defconfig
       - name: Make download
         run: |
@@ -83,20 +81,11 @@ jobs:
       - name: Upload Firmware
         uses: actions/upload-artifact@main
         with:
-          name: SirpdboyOpenWrt-mini-Firmware
+          name: OpenWrt-mini-Firmware
           path: ./mini/firmware
       - name: Upload  IPK
         uses: actions/upload-artifact@main
         with:
-          name: SirpdboyOpenWrt-mini-Ipk
+          name: OpenWrt-mini-Ipk
           path: ./mini/package
-      - name: Upload firmware to cowtransfer
-        run: |
-         curl -fsSL git.io/file-transfer | sh
-         ./transfer cow --block 2621440 -s -p 64 --no-progress ./mini/firmware 2>&1 | tee cowtransfer.log
-         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-      - name: Upload Firmware wetransfer
-        run: |
-          curl -fsSL git.io/file-transfer | sh
-          ./transfer wet -s -p 16 --no-progress ./mini/firmware 2>&1 | tee wetransfer.log
-          echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+
