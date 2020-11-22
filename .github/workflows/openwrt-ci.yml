@@ -1,31 +1,17 @@
-
 name: OpenWrt-CI
 
 on:
   repository_dispatch:
-  release:
-    types: published
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - 'all.config'
-  schedule:
-    - cron: 0 22 */2 * * 
-  watch:
-    types: started
+
 jobs:
-
   build_openwrt:
-
-    name: OpenWrt_Build 
+    name: OpenWrt_Build
 
     runs-on: ubuntu-latest
 
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -83,10 +69,10 @@ jobs:
       - name: Upload Firmware
         uses: actions/upload-artifact@main
         with:
-          name: OpenWrt-IPV6-Firmware
+          name: OpenWrt-Firmware
           path: ./new/firmware
       - name: Upload  IPK
         uses: actions/upload-artifact@main
         with:
-          name: OpenWrt-IPV6-Ipk
+          name: OpenWrt-Ipk
           path: ./new/package

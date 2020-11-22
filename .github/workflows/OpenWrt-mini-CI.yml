@@ -2,35 +2,16 @@ name: OpenWrt-mini-CI
 
 on:
   repository_dispatch:
-  workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
-# on:
-#   repository_dispatch:
-#   release:
-#     types: published
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - '5.config'
-#   watch:
-#     types: started
+
 jobs:
-
   build_openwrt:
-
-    name: OpenWrt-mini-Build 
+    name: OpenWrt-mini-Build
 
     runs-on: ubuntu-latest
 
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -96,4 +77,3 @@ jobs:
         with:
           name: OpenWrt-mini-Ipk
           path: ./mini/package
-
